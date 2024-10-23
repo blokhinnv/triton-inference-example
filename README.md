@@ -1,5 +1,7 @@
 # Simple example of using the Triton Inference Server
 
+Thanks to Ozon and the authors of the Triton course for inviting me to take the course and inspiring me to explore this new technology.
+
 
 1. Navigate to the directory containing docker-compose.yml and start the Triton container:
 ```bash
