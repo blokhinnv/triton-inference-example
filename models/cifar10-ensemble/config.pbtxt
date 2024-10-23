@@ -1,0 +1,46 @@
+name: "cifar10-ensemble"
+platform: "ensemble"
+max_batch_size: 1
+ 
+input [
+  {
+    name: "IMAGE"
+    data_type: TYPE_UINT8
+    dims: [ -1, -1, -1 ]
+  }
+]
+ 
+output [
+  {
+    name: "LOGITS"
+    data_type: TYPE_FP32
+    dims: [ 10 ]
+  }
+]
+ 
+ensemble_scheduling {
+  step {
+    model_name: "cifar10-preprocessing"
+    model_version: -1
+    input_map {
+      key: "IMAGE"
+      value: "IMAGE"
+    }
+    output_map {
+      key: "IMAGE_PREPROCESSED"
+      value: "image_preprocessed"
+    }
+  }
+  step {
+    model_name: "cifar10-cnn"
+    model_version: -1
+    input_map {
+      key: "IMAGE"
+      value: "image_preprocessed"
+    }
+    output_map {
+      key: "LOGITS"
+      value: "LOGITS"
+    }
+  }
+}

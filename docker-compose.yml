@@ -1,0 +1,28 @@
+version: '3.3'
+services:
+    #  Мы определяем сервис с названием tritonserver. 
+    tritonserver: 
+        # Делаем маппинг между портами Triton (8000, 8001, 8002) и свободными локальными портами. 
+        # Как уже говорилось их 3: первый для GRPC запросов, 
+        # второй за HTTP, третий для получения метрик, характеризующих работу Triton.
+        ports:
+            - '19090:8000'
+            - '19091:8001'
+            - '19092:8002'
+        # Монтируем внешнюю директорию LOCAL_PATH_TO_MODELS, в которой лежат наши модели, 
+        # в локальную директорию /models в контейнере.
+        volumes:
+          - './models:/models'
+        image: nvcr.io/nvidia/tritonserver:24.09-py3
+        command: tail -F anything
+        # deploy:
+        #     resources:
+        #         reservations:
+        #             # Если для моделей нужны видеокарты, то пропишем их (в нашем случае укажем 0-ю в device_ids).
+        #             # не работает под windows?
+        #             # https://github.com/triton-inference-server/server/issues/7379 
+        #             devices:
+        #               - driver: nvidia
+        #                 capabilities: [ gpu ]
+        
+
